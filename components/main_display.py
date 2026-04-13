@@ -55,3 +55,25 @@ def render_main_display(params):
             st.caption(f"📌 性格修正：{', '.join(boost_items + nerf_items)}")
     else:
         st.caption("📌 性格修正：无修正")
+
+
+
+# -------------------- 致谢栏 --------------------
+st.markdown("---")
+st.markdown(
+    """
+    <div style='text-align: center; color: #888; font-size: 14px; padding: 20px 0;'>
+        🙏 致谢<br>
+        能力值计算公式来源：
+        <a href='https://www.bilibili.com/opus/1190129562213679105#reply298637760656' target='_blank' style='color: #aaa; text-decoration: none;'>
+            B站专栏 · 洛克王国能力值计算
+        </a><br>
+        精灵图鉴数据来源：
+        <a href='https://wiki.biligame.com/rocom/%E7%B2%BE%E7%81%B5%E5%9B%BE%E9%89%B4' target='_blank' style='color: #aaa; text-decoration: none;'>
+            Biligame Wiki · 洛克王国精灵图鉴
+        </a><br>
+        <span style='font-size: 12px;'>—— 本工具仅供学习交流，数据更新于 2026.04 ——</span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
