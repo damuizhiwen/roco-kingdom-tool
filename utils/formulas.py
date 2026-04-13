@@ -22,3 +22,19 @@ def calculate_other_roco(base, iv, level, nature=1.0, growth=0):
     before_nature = mid + 10
     after_nature = before_nature * nature
     return round(after_nature) + growth
+
+def calculate_damage(
+    attack_stat: float,
+    defense_stat: float,
+    power: float,
+    stab: float = 1.0,
+    type_multiplier: float = 1.0,
+    ability_multiplier: float = 1.0,
+    other_multiplier: float = 1.0,
+    base_factor: float = 0.9
+) -> int:
+    """
+    伤害计算公式：floor( (攻击/防御) * 威力 * 本系 * 属性克制 * 特性 * 其他 * 0.9 )
+    """
+    raw = (attack_stat / defense_stat) * power * stab * type_multiplier * ability_multiplier * other_multiplier * base_factor
+    return max(1, int(raw))

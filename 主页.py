@@ -33,9 +33,9 @@ with col2:
 with col3:
     st.markdown("""
     ### ⚔️ 伤害计算器
-    *开发中，敬请期待*
+    基于攻防双方能力与技能参数，预估战斗伤害。
     """)
-    st.button("进入工具 →", disabled=True, key="damage")
+    st.page_link("pages/3_伤害计算器.py", label="进入工具 →", icon="⚔️")
 
 with col4:
     st.markdown("""
