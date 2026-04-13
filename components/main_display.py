@@ -1,3 +1,5 @@
+# components/main_display.py
+
 import streamlit as st
 from utils.formulas import calculate_hp_roco, calculate_other_roco
 from utils.helpers import get_nature_modifier
@@ -16,7 +18,7 @@ def render_main_display(params):
     nature_info = params["nature_info"]
     growth_hp, growth_other = params["growth_hp"], params["growth_other"]
 
-    # 计算
+    # 计算六项能力值
     hp_mod = get_nature_modifier("hp", nature_info)
     hp_val = calculate_hp_roco(base_hp, iv_hp, level, hp_mod, growth_hp)
 
@@ -35,45 +37,70 @@ def render_main_display(params):
     spe_mod = get_nature_modifier("speed", nature_info)
     spe_val = calculate_other_roco(base_spe, iv_spe, level, spe_mod, growth_other)
 
-    # 展示
-    col1, col2 = st.columns(2)
-    with col1:
-        st.metric("❤️ 生命", hp_val)
-        st.metric("⚔️ 物攻", atk_val)
-        st.metric("🛡️ 物防", def_val)
-    with col2:
-        st.metric("🔮 魔攻", spa_val)
-        st.metric("✨ 魔防", spd_val)
-        st.metric("💨 速度", spe_val)
+    # -------------------- 能力值展示（标签与数值平行居中）--------------------
+    st.markdown(
+        f"""
+        <style>
+            .stat-row {{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 12px 0;
+            }}
+            .stat-label {{
+                font-size: 22px;
+                font-weight: 500;
+                margin-right: 20px;
+                min-width: 100px;
+                text-align: right;
+            }}
+            .stat-value {{
+                font-size: 32px;
+                font-weight: bold;
+                color: #1f77b4;
+                min-width: 70px;
+                text-align: left;
+            }}
+            .stats-container {{
+                display: flex;
+                justify-content: center;
+                gap: 60px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+            }}
+        </style>
+        <div class="stats-container">
+            <div>
+                <div class="stat-row"><span class="stat-label">❤️ 生命</span><span class="stat-value">{hp_val}</span></div>
+                <div class="stat-row"><span class="stat-label">⚔️ 物攻</span><span class="stat-value">{atk_val}</span></div>
+                <div class="stat-row"><span class="stat-label">🛡️ 物防</span><span class="stat-value">{def_val}</span></div>
+            </div>
+            <div>
+                <div class="stat-row"><span class="stat-label">🔮 魔攻</span><span class="stat-value">{spa_val}</span></div>
+                <div class="stat-row"><span class="stat-label">✨ 魔防</span><span class="stat-value">{spd_val}</span></div>
+                <div class="stat-row"><span class="stat-label">💨 速度</span><span class="stat-value">{spe_val}</span></div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    # 显示性格修正情况
-    st.caption("---")
-    if isinstance(nature_info, dict):
-        boost_items = [f"{k}: ×{v:.2f}" for k, v in nature_info.items() if v > 1.0]
-        nerf_items = [f"{k}: ×{v:.2f}" for k, v in nature_info.items() if v < 1.0]
-        if boost_items or nerf_items:
-            st.caption(f"📌 性格修正：{', '.join(boost_items + nerf_items)}")
-    else:
-        st.caption("📌 性格修正：无修正")
-
-
-
-# -------------------- 致谢栏 --------------------
-st.markdown("---")
-st.markdown(
-    """
-    <div style='text-align: center; color: #888; font-size: 14px; padding: 20px 0;'>
-        🙏 致谢<br>
-        能力值计算公式来源：
-        <a href='https://www.bilibili.com/opus/1190129562213679105#reply298637760656' target='_blank' style='color: #aaa; text-decoration: none;'>
-            B站专栏 · 洛克王国能力值计算
-        </a><br>
-        精灵图鉴数据来源：
-        <a href='https://wiki.biligame.com/rocom/%E7%B2%BE%E7%81%B5%E5%9B%BE%E9%89%B4' target='_blank' style='color: #aaa; text-decoration: none;'>
-            Biligame Wiki · 洛克王国精灵图鉴
-        </a><br>
-        <span style='font-size: 12px;'>—— 本工具仅供学习交流，数据更新于 2026.04 ——</span>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+    # -------------------- 致谢栏 --------------------
+    st.markdown("---")
+    st.markdown(
+        """
+        <div style='text-align: center; color: #888; font-size: 14px; padding: 20px 0;'>
+            🙏 致谢<br>
+            能力值计算公式来源：
+            <a href='https://www.bilibili.com/opus/1190129562213679105#reply298637760656' target='_blank' style='color: #aaa; text-decoration: none;'>
+                B站专栏 · 洛克王国能力值计算
+            </a><br>
+            精灵图鉴数据来源：
+            <a href='https://wiki.biligame.com/rocom/%E7%B2%BE%E7%81%B5%E5%9B%BE%E9%89%B4' target='_blank' style='color: #aaa; text-decoration: none;'>
+                Biligame Wiki · 洛克王国精灵图鉴
+            </a><br>
+            <span style='font-size: 12px;'>—— 本工具仅供学习交流，数据更新于 2026.04 ——</span>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
